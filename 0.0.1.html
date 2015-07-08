@@ -15,7 +15,7 @@ function rand(min, max) { return min + (Math.random() * (max - min)); }
 
 function Walker (canvasId) { 
 	var canvas = document.getElementById(canvasId);
-	var ctx = canvas.getContext('2d');
+	var ctx = this.ctx = canvas.getContext('2d');
 	var width = window.innerWidth, 
 		height = window.innerHeight;
 	canvas.width = width;
@@ -33,8 +33,8 @@ Walker.prototype.walk = function() {
 };
 
 Walker.prototype.render = function() {
-	ctx.lineTo(this.x, this.y);
-	ctx.stroke();
+	this.ctx.lineTo(this.x, this.y);
+	this.ctx.stroke();
 };
 
 var walker = new Walker('stage');
