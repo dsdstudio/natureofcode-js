@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Random Walker</title>
+<style>
+body { margin:0; padding:0; }
+canvas { width:100%;height:100%;background-color:#000; }
+</style>
+</head>
+<body>
+  <canvas id="stage" width="100%" height="100%"></canvas>
+<script>
+function rand(min, max) { return min + (Math.random() * (max - min)); }
+
+var canvas = document.getElementById('stage');
+var ctx = canvas.getContext('2d');
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+canvas.width = width;
+canvas.height = height;
+
+function Walker () { 
+  this.x = width / 2;
+  this.y = height / 2;
+
+  ctx.beginPath();
+  ctx.strokeStyle = '#ffffff';
+  ctx.moveTo(this.x, this.y);
+} 
+Walker.prototype.walk = function() {
+  this.x += rand(-1, 1); 
+  this.y += rand(-1, 1); 
+};
+
+Walker.prototype.render = function() {
+  ctx.lineTo(this.x, this.y);
+  ctx.stroke();
+};
+
+var walker = new Walker();
+setInterval(function() {
+  walker.walk();
+  walker.render();
+}, 16);
+</script>
+</body>
+</html>
