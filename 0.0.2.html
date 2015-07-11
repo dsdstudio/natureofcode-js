@@ -16,8 +16,8 @@ var canvas = document.getElementById('stage');
 var ctx = this.ctx = canvas.getContext('2d');
 var width = canvas.width;
 	height = canvas.height;
-var pos = new PVector(100, 100);
-var velocity = new PVector(2.5, 5);
+var pos = new vec2(100, 100);
+var velocity = new vec2(2.5, 5);
 
 setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
