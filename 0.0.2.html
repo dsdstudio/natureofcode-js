@@ -24,13 +24,14 @@ setInterval(function() {
 
 	pos.add(velocity);
 
-	if ((pos.x > width) || (pos.y < 0)) velocity.x = velocity.x * -1;
-	if ((pos.y > height) || (pos.y < 0)) velocity.y = velocity.y * -1;
+	var radius = 8;
+	if ((pos.x+radius > width) || (pos.y < radius)) velocity.x = velocity.x * -1;
+	if ((pos.y+radius > height) || (pos.y < radius)) velocity.y = velocity.y * -1;
 
 	ctx.fillStyle='#fff';
 	ctx.beginPath();
-	ctx.arc(pos.x,pos.y,16,0,2*Math.PI);
-	ctx.fill()
+	ctx.arc(pos.x, pos.y, radius*2, 0, 2*Math.PI);
+	ctx.fill();
 }, 16);
 </script>
 </body>
