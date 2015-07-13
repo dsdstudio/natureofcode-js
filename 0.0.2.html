@@ -16,27 +16,37 @@ var canvas = document.getElementById('stage');
 var ctx = this.ctx = canvas.getContext('2d');
 var width = canvas.width;
 	height = canvas.height;
-var velocity = new vec2(2.5, 5);
-function Ball(pos, radius, color) {
+var fn;
+function BallMover(pos, radius, color) {
 	this.pos = pos;
 	this.radius = radius;
 	this.color = color;
+	this.velocity = new vec2(0, 0);
+	this.acceleration = new vec2(-0.001, 0.01);
+	this.topspeed = 10;
 	ctx.fillStyle = color;
 }
-Ball.prototype.update = function(velocity) {
-	this.pos.add(velocity);
-	if ((this.pos.x+this.radius > width) || (this.pos.y < this.radius)) velocity.x = velocity.x * -1;
-	if ((this.pos.y+this.radius > height) || (this.pos.y < this.radius)) velocity.y = velocity.y * -1;
-};
-Ball.prototype.render = function() {
+(fn = BallMover.prototype).update = function() {
+	this.velocity.add(this.acceleration);
+	this.velocity.limit(this.topspeed);
+	this.pos.add(this.velocity);
+},
+fn.checkEdges = function() {
+	if (this.pos.x > width) this.pos.x = 0;
+	else if (this.pos.x < 0) this.pos.x = width;
+	if (this.pos.y > height) this.pos.y = 0;
+	else if (this.pos.y < 0) this.pos.y = height;
+},
+fn.render = function() {
 	ctx.beginPath();
 	ctx.arc(this.pos.x, this.pos.y, this.radius*2, 0, 2*Math.PI);
 	ctx.fill();
-}
-var ball = new Ball(new vec2(100, 100), 8, '#fff');
+};
+var ball = new BallMover(new vec2(width*.5, height*.5), 16, '#fff');
 setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
-	ball.update(velocity);
+	ball.update();
+	ball.checkEdges();
 	ball.render();
 }, 16);
 </script>
