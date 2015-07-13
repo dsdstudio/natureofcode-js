@@ -23,10 +23,20 @@ function BallMover(pos, radius, color) {
 	this.color = color;
 	this.velocity = new vec2(0, 0);
 	this.acceleration = new vec2(-0.001, 0.01);
+	this.mouse = new vec2(0, 0);
 	this.topspeed = 10;
 	ctx.fillStyle = color;
+	var self = this;
+	canvas.addEventListener('mousemove', function(e) {
+		self.mouse = new vec2(e.pageX, e.pageY);
+	});
 }
 (fn = BallMover.prototype).update = function() {
+	var dir = Vector.sub(this.mouse, this.pos);
+	dir.normalize();
+	dir.mult(0.5);
+
+	this.acceleration = dir;
 	this.velocity.add(this.acceleration);
 	this.velocity.limit(this.topspeed);
 	this.pos.add(this.velocity);
@@ -43,6 +53,7 @@ fn.render = function() {
 	ctx.fill();
 };
 var ball = new BallMover(new vec2(width*.5, height*.5), 16, '#fff');
+
 setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
 	ball.update();
