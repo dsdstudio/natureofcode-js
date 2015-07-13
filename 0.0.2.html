@@ -24,8 +24,7 @@ function BallMover(pos, radius, color) {
 	this.velocity = new vec2(0, 0);
 	this.acceleration = new vec2(-0.001, 0.01);
 	this.mouse = new vec2(0, 0);
-	this.topspeed = 10;
-	ctx.fillStyle = color;
+	this.topspeed = 4;
 	var self = this;
 	canvas.addEventListener('mousemove', function(e) {
 		self.mouse = new vec2(e.pageX, e.pageY);
@@ -34,7 +33,7 @@ function BallMover(pos, radius, color) {
 (fn = BallMover.prototype).update = function() {
 	var dir = Vector.sub(this.mouse, this.pos);
 	dir.normalize();
-	dir.mult(0.5);
+	dir.mult(0.2);
 
 	this.acceleration = dir;
 	this.velocity.add(this.acceleration);
@@ -49,16 +48,27 @@ fn.checkEdges = function() {
 },
 fn.render = function() {
 	ctx.beginPath();
+	ctx.fillStyle = this.color;
 	ctx.arc(this.pos.x, this.pos.y, this.radius*2, 0, 2*Math.PI);
 	ctx.fill();
 };
-var ball = new BallMover(new vec2(width*.5, height*.5), 16, '#fff');
-
+var balls = (function() {
+	var t0 = [];
+	var i = 20;
+	while(i--) {
+		var ball = new BallMover(new vec2(rand(0,width), rand(0,height)), 8, 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)');
+		t0.push(ball);
+	}
+	return t0;
+})();
 setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
-	ball.update();
-	ball.checkEdges();
-	ball.render();
+	var i = balls.length;
+	while(i--) {
+		balls[i].update();
+		balls[i].checkEdges();
+		balls[i].render();
+	}
 }, 16);
 </script>
 </body>
