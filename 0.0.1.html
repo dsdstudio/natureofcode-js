@@ -3,21 +3,19 @@
 <head>
 <meta charset="utf-8">
 <title>Random Walker</title>
-<style>
-body { margin:0; padding:0; }
-canvas { width:500px;height:500px; background-color:#000;}
-</style>
+<link rel="stylesheet" href="styles/common.css">
 </head>
 <body>
-	<canvas id="stage" width="500" height="500"></canvas>
+<canvas id="stage"></canvas>
 <script src="js/common.js"></script>
 <script>
 function Walker (canvasId) { 
 	var canvas = document.getElementById(canvasId);
 	var ctx = this.ctx = canvas.getContext('2d');
-	var width = canvas.width;
-		height = canvas.height;
-		console.log(width, height);
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
 	this.x = width / 2;
 	this.y = height / 2;
 
