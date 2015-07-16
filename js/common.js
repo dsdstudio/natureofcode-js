@@ -39,3 +39,8 @@ Vector = {};
 Vector.sub = function(v1, v2) {
 	return new vec2(v1.x - v2.x, v1.y - v2.y);
 };
+Vector.div = function(v, m) {
+	var v = new vec2(v.x, v.y);
+	v.div(m);
+	return v;
+};
