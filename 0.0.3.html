@@ -18,8 +18,8 @@ var fn;
 ctx.canvas.width = width;
 ctx.canvas.height = height;
 
-function BallMover(pos, radius, color) {
-	this.mass = 1;
+function BallMover(pos, radius, color, mass) {
+	this.mass = mass;
 	this.pos = pos;
 	this.radius = radius;
 	this.color = color;
@@ -57,10 +57,10 @@ fn.render = function() {
 };
 
 var balls = ( function() {
-	var i = 200;
+	var i = 20;
 	var t0 = [];
 	while(i--){
-		t0.push(new BallMover(new vec2(rand(0,width),rand(0,height)), rand(8,16), 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)'));
+		t0.push(new BallMover(new vec2(rand(0,width),rand(0,height)), rand(8,16), 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)', rand(0.1, 5)));
 	}
 	return t0;
 })();
@@ -68,8 +68,9 @@ setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
 	var i = balls.length;
 	while(i--) {
+		var m = balls[i].mass;
 		var wind = new vec2(0.10, 0);
-		var gravity = new vec2(0, 0.1);
+		var gravity = new vec2(0, 0.1 * m);
 		balls[i].applyForce(wind);
 		balls[i].applyForce(gravity);
 		balls[i].update();
