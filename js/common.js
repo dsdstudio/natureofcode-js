@@ -7,6 +7,9 @@ vec2.prototype.add = function(v) {
 	this.y += v.y;
 	this.x += v.x;
 };
+vec2.prototype.get = function() {
+	return new vec2(this.x, this.y);
+};
 vec2.prototype.limit = function(max) {
 	var mSq = this.magSq();
 	if ( mSq > max*max ) {
@@ -27,6 +30,7 @@ vec2.prototype.normalize = function(n) {
 	return this.div(this.mag());
 };
 vec2.prototype.div = function(n) {
+	if ( n == 0 ) return;
 	this.x /= n;
 	this.y /= n;
 }
