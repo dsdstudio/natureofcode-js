@@ -48,3 +48,16 @@ Vector.div = function(v, m) {
 	v.div(m);
 	return v;
 };
+
+function Liquid(x,y,w,h,c) {
+	this.x = x;
+	this.y = y;
+	this.w = w;
+	this.h = h;
+	this.c = c;
+}
+
+Liquid.prototype.render = function(ctx) {
+	ctx.fillStyle = '#0dd0fd';
+	ctx.fillRect(this.x, this.y, this.w, this.y);
+};
