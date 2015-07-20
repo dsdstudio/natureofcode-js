@@ -61,3 +61,29 @@ Liquid.prototype.render = function(ctx) {
 	ctx.fillStyle = '#0dd0fd';
 	ctx.fillRect(this.x, this.y, this.w, this.y);
 };
+
+function Attractor(loc, mass) {
+	this.loc = loc;
+	this.mass = mass;
+	this.G = 1;
+}
+
+Attractor.prototype.attract = function(m) {
+	var force = Vector.sub(this.loc, m.pos);
+
+	var distance = force.mag();
+	if ( distance < 5 ) distance = 5;
+	else if ( distance > 25 ) distance = 25;
+	force.normalize();
+
+	var strength = (this.G * this.mass * m.mass) / (distance*distance);
+	force.mult(strength);
+
+	return force;
+};
+Attractor.prototype.render = function(ctx) {
+	ctx.beginPath();
+	ctx.fillStyle = '#f0f0f0';
+	ctx.arc(this.loc.x, this.loc.y, this.mass*2, 0, 2*Math.PI);
+	ctx.fill();
+};
