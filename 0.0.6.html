@@ -19,6 +19,7 @@ ctx.canvas.width = width;
 ctx.canvas.height = height;
 
 function BallMover(pos, radius, color, mass) {
+	this.G = 2;
 	this.mass = mass;
 	this.pos = pos;
 	this.radius = radius;
@@ -60,12 +61,25 @@ fn.render = function() {
 	ctx.arc(this.pos.x, this.pos.y, this.radius*2, 0, 2*Math.PI);
 	ctx.fill();
 };
+fn.attract = function(m) {
+	var force = Vector.sub(this.pos, m.pos);
+
+	var distance = force.mag();
+	if ( distance < 5 ) distance = 5;
+	else if ( distance > 25 ) distance = 25;
+	force.normalize();
+
+	var strength = (this.G * this.mass * m.mass) / (distance*distance);
+	force.mult(strength);
+
+	return force;
+}
 
 var balls = (function() {
 	var t0 = [];
 	var i = 30;
 	while(i--)
-		t0.push(new BallMover(new vec2(rand(0,width),rand(0,height*.2)), rand(8,16), 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)', 5));
+		t0.push(new BallMover(new vec2(rand(0,width), rand(0,height)), 8, 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)', 2));
 	return t0;
 })();
 var attractor = new Attractor(new vec2(width*.5, height*.5), 20);
@@ -73,11 +87,13 @@ var attractor = new Attractor(new vec2(width*.5, height*.5), 20);
 setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
 
-	var i = balls.length;
-	while(i--) {
-		var f = attractor.attract(balls[i]);
-		attractor.render(ctx);
-		balls[i].applyForce(f);
+	for ( var i = 0; i< balls.length;i++ ) {
+		for  (var j = 0; j < balls.length; j++ ){
+			if ( i != j ) {
+				var f = balls[j].attract(balls[i]);
+				balls[i].applyForce(f);
+			}
+		}
 		balls[i].update();
 		balls[i].render();
 	}
