@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>회전 예제</title>
+<link rel="stylesheet" href="styles/common.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+<script src="js/common.js"></script>
+<script>
+var canvas = document.getElementById('stage');
+var ctx = this.ctx = canvas.getContext('2d');
+var width = window.innerWidth;
+	height = window.innerHeight;
+ctx.canvas.width = width;
+ctx.canvas.height = height;
+setInterval(function() {
+	ctx.clearRect(0, 0, width, height);
+
+}, 16);
+</script>
+</body>
+</html>
