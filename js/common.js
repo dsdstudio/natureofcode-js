@@ -3,6 +3,11 @@ function vec2(x,y) {
 	this.x = x;
 	this.y = y;
 }
+function constrain(n, min, max) {
+	if ( n < min ) n = min;
+	else if ( n > max ) n = 25;
+	return n;
+}
 vec2.prototype.add = function(v) {
 	this.y += v.y;
 	this.x += v.x;
