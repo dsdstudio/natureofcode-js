@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>회전 예제</title>
+<link rel="stylesheet" href="styles/common.css">
+</head>
+<body>
+<canvas id="stage"></canvas>
+<script src="js/common.js"></script>
+<script>
+var canvas = document.getElementById('stage');
+var ctx = this.ctx = canvas.getContext('2d');
+var width = window.innerWidth;
+	height = window.innerHeight;
+ctx.canvas.width = width;
+ctx.canvas.height = height;
+function Car(loc, velocity, acceleration) {
+	this.loc = loc;
+	this.velocity = velocity;
+	this.acceleration = acceleration;
+	this.angle = 0;
+}
+Car.prototype.render = function() {
+	var angle = Math.atan2(this.velocity.y, this.velocity.x);
+	ctx.rotate(angle * Math.PI/180);
+
+	ctx.strokeStyle='#fff';
+	ctx.fillStyle='#fff';
+	ctx.fillRect(0, 0, 20, 20);
+	ctx.translate(this.loc.x, this.loc.y);
+	console.log(this.velocity.y);
+}
+window.addEventListener('keydown', function(e) {
+	if ( e.keyCode == 38 ) { // up
+		car.velocity.y += 0.001;
+	} else if ( e.keyCode == 40 ) { // down
+	} else if ( e.keyCode == 37 ) { // left
+	} else if ( e.keyCode == 39 ) { // right
+	}
+});
+var car = new Car(new vec2(50, 50), new vec2(0, 0), new vec2(0, 0));
+setInterval(function() {
+	ctx.save();
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	ctx.clearRect(0, 0, width, height);
+		car.render();
+	ctx.restore();
+}, 16);
+</script>
+</body>
+</html>
