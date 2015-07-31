@@ -5,7 +5,7 @@ function vec2(x,y) {
 }
 function constrain(n, min, max) {
 	if ( n < min ) n = min;
-	else if ( n > max ) n = 25;
+	else if ( n > max ) n = max;
 	return n;
 }
 vec2.prototype.add = function(v) {
