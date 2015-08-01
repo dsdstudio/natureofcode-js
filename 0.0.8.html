@@ -15,21 +15,17 @@ var width = window.innerWidth;
 	height = window.innerHeight;
 ctx.canvas.width = width;
 ctx.canvas.height = height;
-var r = 75;
+var r = 16;
 var theta = Math.PI / 4;
 setInterval(function() {
 	var x = r * Math.cos(theta);
 	var y = r * Math.sin(theta);
-	ctx.clearRect(0, 0, width, height);
 	ctx.fillStyle = '#fff';
 	ctx.beginPath();
 	ctx.arc(x + (width*.5), y + (height*.5), 16, 0, Math.PI *2);
 	ctx.fill();
-	ctx.strokeStyle = '#fff';
-	ctx.moveTo(width*.5, height*.5);
-	ctx.lineTo(x + (width*.5), y + (height*.5));
-	ctx.stroke()
 	theta += 0.01;
+	r+= 0.1;
 }, 16);
 </script>
 </body>
