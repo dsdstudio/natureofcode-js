@@ -72,15 +72,14 @@ var balls = ( function() {
 
 var wind = new vec2(0.001, 0);
 
-window.addEventListener('touchstart', function(e) {
-    var x = e.touches[0].clientX, y = e.touches[0].clientY;
-    addBalls(x,y);
-});
-
-window.addEventListener('touchmove', function(e) {
-    var x = e.touches[0].clientX, y = e.touches[0].clientY;
-    addBalls(x,y);
-});
+function touchHandler(e) {
+    for (var i = 0,n = e.touches.length; i<n;i++) {
+        var x = e.touches[i].clientX, y = e.touches[i].clientY;
+        addBalls(x,y);
+    }
+}
+window.addEventListener('touchstart', touchHandler);
+window.addEventListener('touchmove', touchHandler);
 
 function addBalls(x,y) {
     var radius = rand(8,20), halfRadius = radius*.5;
