@@ -72,6 +72,21 @@ var balls = ( function() {
 
 var wind = new vec2(0.001, 0);
 
+window.addEventListener('touchstart', function(e) {
+    var x = e.touches[0].clientX, y = e.touches[0].clientY;
+    addBalls(x,y);
+});
+
+window.addEventListener('touchmove', function(e) {
+    var x = e.touches[0].clientX, y = e.touches[0].clientY;
+    addBalls(x,y);
+});
+
+function addBalls(x,y) {
+    var radius = rand(8,20), halfRadius = radius*.5;
+    balls.push(new BallMover(new vec2(x+halfRadius,y-halfRadius), radius, 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)', rand(0.1, 5)));
+}
+
 setInterval(function() {
 	ctx.clearRect(0, 0, width, height);
 	var i = balls.length;
