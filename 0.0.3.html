@@ -42,15 +42,15 @@ fn.applyForce = function(force) {
 	this.acceleration.add(f);
 },
 fn.checkEdges = function() {
-	if (this.pos.x > width ) {
-		this.pos.x = width;
+	if (this.pos.x + this.radius > width ) {
+		this.pos.x = width - this.radius;
 		this.velocity.x = this.velocity.x * -1;
 	} else if (this.pos.x < 0) {
 		this.pos.x = 0;
 		this.velocity.x = this.velocity.x * -1;
 	}
-	if (this.pos.y > height) {
-		this.pos.y = height;
+	if (this.pos.y + this.radius > height) {
+		this.pos.y = height - this.radius;
 		this.velocity.y = this.velocity.y * -1;
 	}
 },
@@ -70,19 +70,23 @@ var balls = ( function() {
 	return t0;
 })();
 
-var wind = new vec2(0.001, 0);
+var wind = new vec2(0.01, 0);
 
 function touchHandler(e) {
-    for (var i = 0,n = e.touches.length; i<n;i++) {
+    for (var i = 0, n = e.touches.length; i<n;i++) {
         var x = e.touches[i].clientX, y = e.touches[i].clientY;
         addBalls(x,y);
     }
 }
+
+window.addEventListener('mousemove', function(e) {
+	addBalls(e.clientX, e.clientY);
+});
 window.addEventListener('touchstart', touchHandler);
 window.addEventListener('touchmove', touchHandler);
 
 function addBalls(x,y) {
-    var radius = rand(8,20), halfRadius = radius*.5;
+    var radius = rand(4,10), halfRadius = radius*.5;
     balls.push(new BallMover(new vec2(x+halfRadius,y-halfRadius), radius, 'rgba(' + [Math.round(rand(0,255)),Math.round(rand(0,255)),Math.round(rand(0,255))].join(',') + ', .8)', rand(0.1, 5)));
 }
 
@@ -91,7 +95,7 @@ setInterval(function() {
 	var i = balls.length;
 	while(i--) {
 		var m = balls[i].mass;
-		var c = 0.01;
+		var c = 0.1;
 		var friction = balls[i].velocity.get();
 		friction.mult(-1);
 		friction.normalize();
@@ -105,6 +109,7 @@ setInterval(function() {
 		balls[i].checkEdges();
 		balls[i].render();
 	}
+	console.log('objectcnt:', balls.length);
 }, 16);
 </script>
 </body>
