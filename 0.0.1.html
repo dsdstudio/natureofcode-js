@@ -6,30 +6,35 @@
 <link rel="stylesheet" href="styles/common.css">
 </head>
 <body>
-<canvas id="stage"></canvas>
+    <canvas id="stage"></canvas>
+    <div class="container">
+        <p>키보드 입력으로 조작이 가능합니다.<br />
+            s : 시작/중지 토글<br />
+            c : 화면 클리어 
+        </p>
+    </div>
 <script src="js/common.js"></script>
 <script>
 const Walker = ( _ => {
     return class {
         constructor(canvasId){
 	        const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            const width = window.innerWidth, height = window.innerHeight;
+            const ctx = canvas.getContext('2d'),
+                  width = window.innerWidth,
+                  height = window.innerHeight;
             this.ctx = ctx;
 	        ctx.canvas.width = width;
 	        ctx.canvas.height = height;
 	        this.x = width / 2;
 	        this.y = height / 2;
-
 	        ctx.beginPath();
 	        ctx.strokeStyle = '#fff';
 	        ctx.moveTo(this.x, this.y);
 	        this.mouse = {x:0,y:0};
-	        var self = this;
-	        canvas.addEventListener('mousemove', function(e) {
-		        self.mouse.x = e.pageX;
-		        self.mouse.y = e.pageY;
-	        });
+	        canvas.addEventListener('mousemove', e => {
+		        this.mouse.x = e.pageX;
+		        this.mouse.y = e.pageY;
+            });
         }
         walk() {
 	        const r = Math.random();
@@ -51,16 +56,40 @@ const Walker = ( _ => {
 	        }
         }
         render() {
+            this.walk();
 	        this.ctx.lineTo(this.x, this.y);
 	        this.ctx.stroke();
-        } 
+            this.$loopId = window.requestAnimationFrame(_ => this.render());
+        }
+        toggle() {
+            if ( this.$loopId ) window.cancelAnimationFrame(this.$loopId), delete this.$loopId;
+            else this.render();
+        }
+        clear() {
+            const ctx = this.ctx;
+            console.log(ctx.canvas.width, ctx.canvas.height);
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	        ctx.beginPath();
+        }
     };
 })();
 const walker = new Walker('stage');
-setInterval(function() {
-	walker.walk();
-	walker.render();
-}, 16);
+walker.render();
+
+const kbdMap = {
+    83:'s',
+    67:'c'
+};
+const actionMap = {
+    s:_ => walker.toggle(),
+    c:_ => walker.clear()
+};
+window.addEventListener('keydown', e => {
+    const kbdKey = kbdMap[e.keyCode];
+    const action = actionMap[kbdKey];
+    if (!action) return;
+    action();
+});
 </script>
 </body>
 </html>
