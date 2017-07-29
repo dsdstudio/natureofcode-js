@@ -74,7 +74,6 @@ const Liquid = _ => {
     };
 };
 
-
 const Attractor = _ => {
     return class {
         constructor (loc, mass) {
