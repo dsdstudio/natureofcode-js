@@ -1,4 +1,4 @@
-const vec2 = _ => {
+const vec2 =( _ => {
     return class {
         constructor(x,y) {
 	        this.x = x;
@@ -41,7 +41,7 @@ const vec2 = _ => {
 	        return (x*x+y*y);
         }
     };
-};
+})();
 function rand(min, max) { return min + (Math.random() * (max - min)); }
 function constrain(n, min, max) {
 	if ( n < min ) n = min;
@@ -53,12 +53,12 @@ Vector.sub = function(v1, v2) {
 	return new vec2(v1.x - v2.x, v1.y - v2.y);
 };
 Vector.div = function(v, m) {
-	var v = new vec2(v.x, v.y);
-	v.div(m);
-	return v;
+	const vv = new vec2(v.x, v.y);
+	vv.div(m);
+	return vv;
 };
 
-const Liquid = _ => {
+const Liquid = (_ => {
     return class {
         constructor(x,y,w,h,c) {
 	        this.x = x;
@@ -72,9 +72,9 @@ const Liquid = _ => {
 	        ctx.fillRect(this.x, this.y, this.w, this.y);
         }
     };
-};
+})();
 
-const Attractor = _ => {
+const Attractor = (_ => {
     return class {
         constructor (loc, mass) {
 	        this.loc = loc;
@@ -101,4 +101,4 @@ const Attractor = _ => {
 	        ctx.fill();
         }
     };
-};
+})();
